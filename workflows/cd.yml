@@ -36,15 +36,9 @@ jobs:
       - name: Twine check
         run: python -m twine check dist/*
 
-      - name: Publish to GitHub Packages (Python)
-        env:
-          OWNER: ${{ github.repository_owner }}
+      - name: Publish to testPyPI
         run: |
-          ORG_URL="https://api.github.com/orgs/${OWNER}/packages/pypi/upload"
-          USER_URL="https://api.github.com/users/${OWNER}/packages/pypi/upload"
-
-          echo "Trying org endpoint: $ORG_URL"
-          python -m twine upload --repository-url "$ORG_URL" dist/* || (
-            echo "Org endpoint failed, trying user endpoint: $USER_URL" &&
-            python -m twine upload --repository-url "$USER_URL" dist/*
-          )
+          twine upload \
+            --repository-url https://test.pypi.org/legacy/ \
+            dist/*
+            
