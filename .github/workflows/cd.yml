@@ -36,6 +36,6 @@ jobs:
 
       - name: Publish to TestPyPI
         run: |
-          twine upload \
+          twine upload -v \
             --repository-url https://test.pypi.org/legacy/ \
             dist/*
