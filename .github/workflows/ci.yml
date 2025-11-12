@@ -2,9 +2,11 @@ name: CI
 
 on:
   push:
-    branches: [main, 'feature/']
+    branches: [ main, 'feature/**' ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
+  workflow_call:           #permet d'appeler ce workflow depuis un autre
+  workflow_dispatch:
 
 jobs:
   test:
