@@ -1,12 +1,15 @@
 name: CD (TestPyPI)
 
-env:
-  TWINE_USERNAME: _token_
-  TWINE_PASSWORD: ${{ secrets.TEST_PYPI_TOKEN }}
-
 on:
   push:
-    branches: [main]
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+
+env:
+  TWINE_USERNAME: __token__
+  TWINE_PASSWORD: ${{ secrets.TEST_PYPI_TOKEN }}
+  TWINE_REPOSITORY_URL: https://test.pypi.org/legacy/
 
 permissions:
   contents: read
@@ -16,10 +19,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
@@ -32,10 +35,8 @@ jobs:
         run: python -m build
 
       - name: Check the package
-        run: twine check dist/*
+        run: python -m twine check dist/*
 
       - name: Publish to TestPyPI
         run: |
-          twine upload --v\
-            --repository-url https://test.pypi.org/legacy/ \
-            dist/*
+          python -m twine upload --verbose --non-interactive --skip-existing dist/*
