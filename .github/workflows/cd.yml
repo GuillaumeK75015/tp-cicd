@@ -17,8 +17,8 @@ permissions:
 
 jobs:
 # 1)pour lancer le ci défini dans yml
-ci:
-  uses: ./.github/workflows/ci.yml
+  ci:
+    uses: ./.github/workflows/ci.yml
 
   publish:
     needs: ci
